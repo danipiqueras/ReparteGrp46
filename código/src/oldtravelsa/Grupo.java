@@ -5,63 +5,78 @@ import java.util.List;
 import java.time.LocalDate;
 
 public class Grupo {
+    private static int contadorGrupos = 0; // Variable estática para contar los grupos
+    private final int id;
     private String nombre;
-    private Usuario creador;
+    private final Usuario creador;
     private String descripcion;
-    private LocalDate fechaCreacion;
+    private final LocalDate fechaCreacion;
     private List<Usuario> miembros;
     private List<Gasto> gastos;
 
     public Grupo(String nombre, Usuario creador, String descripcion, LocalDate fechaCreacion) {
-        this.nombre = nombre;
+        if (nombre == null || nombre.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del grupo no puede ser nulo o vacío");
+        }
+        if (creador == null) {
+            throw new IllegalArgumentException("El creador del grupo no puede ser nulo");
+        }
+        if (descripcion == null) {
+            throw new IllegalArgumentException("La descripción del grupo no puede ser nula");
+        }
+
+        this.id = ++contadorGrupos;
+        this.setNombre(nombre);
         this.creador = creador;
-        this.descripcion = descripcion;
+        this.setDescripcion(descripcion);
         this.fechaCreacion = fechaCreacion;
         this.miembros = new ArrayList<>();
         this.miembros.add(creador); // Se agrega automáticamente al creador como miembro inicial
         this.gastos = new ArrayList<>();
     }
-    
+
+    public int getId() {
+        return id;
+    }
+
     public String getNombre() {
         return nombre;
     }
-    
+
     public void setNombre(String nombre) {
+        if (nombre == null || nombre.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del grupo no puede ser nulo o vacío");
+        }
         this.nombre = nombre;
     }
-    
+
     public Usuario getCreador() {
         return creador;
     }
-    
-    public void setCreador(Usuario creador) {
-        this.creador = creador;
-    }
-    
+
     public String getDescripcion() {
         return descripcion;
     }
-    
+
     public void setDescripcion(String descripcion) {
+        if (descripcion == null) {
+            throw new IllegalArgumentException("La descripción del grupo no puede ser nula");
+        }
         this.descripcion = descripcion;
     }
-    
+
     public LocalDate getFechaCreacion() {
         return fechaCreacion;
     }
-    
-    public void setFechaCreacion(LocalDate fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-    
+
     public List<Gasto> getGastos() {
         return gastos;
     }
-    
+
     public void setGastos(List<Gasto> gastos) {
         this.gastos = gastos;
     }
-    
+
     public List<Usuario> getMiembros() {
         return miembros;
     }
@@ -71,12 +86,26 @@ public class Grupo {
     }
 
     public void añadirMiembro(Usuario usuario) {
+        if (usuario == null) {
+            throw new IllegalArgumentException("El usuario a añadir no puede ser nulo");
+        }
         if (!miembros.contains(usuario)) {
             miembros.add(usuario);
+        } else {
+            throw new IllegalArgumentException("El usuario ya está en el grupo");
         }
     }
 
     public void eliminarMiembro(Usuario usuario) {
+        if (usuario == null) {
+            throw new IllegalArgumentException("El usuario a eliminar no puede ser nulo");
+        }
+        if (usuario.equals(creador)) {
+            throw new IllegalArgumentException("No se puede eliminar al creador del grupo");
+        }
+        if (!miembros.contains(usuario)) {
+            throw new IllegalArgumentException("Este usuario no está en el grupo");
+        }
         miembros.remove(usuario);
     }
 }
