@@ -209,4 +209,23 @@ public class TestUsuario {
         assertEquals(cantidadInicial - cantidad, usuario.getBalance(), 0.01); // Se espera que el balance se haya reducido correctamente
         assertTrue(usuario.getBalance() < cantidadInicial); // Verificar que el balance se haya reducido
     }
+    
+    @Test
+    public void testUsuarioValoresValidos() {
+        // Arrange
+        String nombre = "Juan";
+        String correo = "juan@example.com";
+        String dni = "12345678A";
+        String telefono = "123456789";
+
+        // Act
+        Usuario usuario = new Usuario(nombre, correo, dni, telefono);
+
+        // Assert
+        assertNotNull(usuario);
+        assertEquals(nombre, usuario.getNombre());
+        assertEquals(correo, usuario.getCorreo());
+        assertEquals(dni, usuario.getDni());
+        assertEquals(telefono, usuario.getTelefono());
+    }
 }

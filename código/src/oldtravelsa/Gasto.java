@@ -12,13 +12,6 @@ public class Gasto {
     private final LocalDate fecha;
     
     public Gasto(int id, Grupo grupo, Usuario pagador, String descripcion, double cantidadPagada, LocalDate fecha) {
-        this.id = id;
-        this.grupo = grupo;
-        this.pagador = pagador;
-        this.descripcion = descripcion;
-        this.cantidadPagada = cantidadPagada;
-        this.fecha = fecha;
-        
         // Comprueba que la cantidad sea mayor a 0
         if (cantidadPagada <= 0) {
             throw new IllegalArgumentException("La cantidad pagada debe ser mayor a 0");
@@ -28,6 +21,16 @@ public class Gasto {
         if (!grupo.getMiembros().contains(pagador)) {
             throw new IllegalArgumentException("El pagador debe ser miembro del grupo");
         }
+        
+        this.id = id;
+        this.grupo = grupo;
+        this.pagador = pagador;
+        this.descripcion = descripcion;
+        this.cantidadPagada = cantidadPagada;
+        this.fecha = fecha;
+        
+        
+        grupo.añadirGasto(this);
     }
     
     public int getId() {
@@ -64,7 +67,7 @@ public class Gasto {
     	double cantidad = this.cantidadPagada / usuarios.size();
         for (Usuario usuario : usuarios) {
 			if (!usuario.equals(pagador)) {
-				usuario.recibirMensajeGasto(String.format("Se debe pagar %f a %d",cantidad,this.pagador), cantidad);
+				usuario.recibirMensajeGasto(String.format("Se debe pagar %f a %s",cantidad,this.pagador), cantidad);
 			}
 		}
     }

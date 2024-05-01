@@ -108,4 +108,15 @@ public class Grupo {
         }
         miembros.remove(usuario);
     }
+    
+    public void añadirGasto(Gasto gasto) {
+    	if (gasto == null) {
+            throw new IllegalArgumentException("El gasto a añadir no puede ser nulo");
+        }
+        if (!gastos.contains(gasto)) {
+            gastos.add(gasto);
+        } else {
+            throw new IllegalArgumentException("El gasto ya está registrado");
+        }
+    }
 }

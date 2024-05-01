@@ -71,4 +71,25 @@ class TestGrupo {
         assertTrue(miembros.contains(miembro1)); // Verificar que el miembro1 esté en la lista de miembros
         assertTrue(miembros.contains(miembro2)); // Verificar que el miembro2 esté en la lista de miembros
     }
+    
+    @Test
+    void testGrupoValoresValidos() {
+        // Arrange
+        Usuario creador = new Usuario("Creador", "creador@example.com", "12345678A", "987654321");
+        String nombre = "Grupo de Viajes";
+        String descripcion = "Grupo para organizar viajes en familia";
+        LocalDate fechaCreacion = LocalDate.now();
+
+        // Act
+        Grupo grupo = new Grupo(nombre, creador, descripcion, fechaCreacion);
+
+        // Assert
+        assertNotNull(grupo);
+        assertEquals(nombre, grupo.getNombre());
+        assertEquals(creador, grupo.getCreador());
+        assertEquals(descripcion, grupo.getDescripcion());
+        assertEquals(fechaCreacion, grupo.getFechaCreacion());
+        assertTrue(grupo.getMiembros().contains(creador)); // Verificar que el creador esté en la lista de miembros
+    }
+
 }
