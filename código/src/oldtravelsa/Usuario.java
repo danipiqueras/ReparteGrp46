@@ -12,20 +12,11 @@ public class Usuario {
     private double balance;
 
     public Usuario(String nombre, String correo, String dni, String telefono) {
-        if (dni == null || dni.isEmpty()) {
-            throw new IllegalArgumentException("El DNI no puede ser nulo o vacío");
+        if (dni == null) {
+            throw new IllegalArgumentException("El DNI no puede ser nulo");
         }
         if (!validarDNI(dni)) {
             throw new IllegalArgumentException("El formato del DNI no es válido");
-        }
-        if (correo == null || correo.isEmpty() || !correo.contains("@")) {
-            throw new IllegalArgumentException("El correo no puede ser nulo, vacío o no contener '@'");
-        }
-        if (nombre == null || nombre.isEmpty()) {
-            throw new IllegalArgumentException("El nombre no puede ser nulo o vacío");
-        }
-        if (telefono == null || telefono.isEmpty() || !(telefono.length()==9) ){
-            throw new IllegalArgumentException("El teléfono no puede ser nulo o vacío, y deben ser 9 números");
         }
 
         this.dni = dni;
@@ -44,6 +35,9 @@ public class Usuario {
         if (nombre == null || nombre.isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede ser nulo o vacío");
         }
+        if (nombre.length() > 60) {
+            throw new IllegalArgumentException("Nombre demasiado largo");
+        }
         this.nombre = nombre;
     }
 
@@ -52,7 +46,7 @@ public class Usuario {
     }
 
     public void setCorreo(String correo) {
-        if (correo == null || correo.isEmpty() || !correo.contains("@")) {
+        if (correo == null || !correo.contains("@")) {
             throw new IllegalArgumentException("El correo no puede ser nulo, vacío o no contener '@'");
         }
         this.correo = correo;
@@ -69,8 +63,8 @@ public class Usuario {
     }
 
     public void setTelefono(String telefono) {
-        if (telefono == null || telefono.isEmpty()) {
-            throw new IllegalArgumentException("El teléfono no puede ser nulo o vacío");
+    	if (telefono == null || !(telefono.length()==9) ){
+            throw new IllegalArgumentException("El teléfono no puede ser nulo o vacío, y deben ser 9 números");
         }
         this.telefono = telefono;
     }

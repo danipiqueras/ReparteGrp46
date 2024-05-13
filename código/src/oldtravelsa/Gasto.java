@@ -15,6 +15,9 @@ public class Gasto {
     	if (grupo == null) {
             throw new IllegalArgumentException("El grupo no puede ser nulo");
         }
+    	if (id < 0) {
+            throw new IllegalArgumentException("La ID debe ser positiva");
+        }
     	
         // Comprueba que la cantidad sea mayor a 0
         if (cantidadPagada <= 0) {
@@ -24,6 +27,10 @@ public class Gasto {
         // Comprueba que el pagador forme parte del grupo
         if (!grupo.getMiembros().contains(pagador)) {
             throw new IllegalArgumentException("El pagador debe ser miembro del grupo");
+        }
+        
+        if (fecha == null || fecha.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("La fecha de creacion no puede ser nula o futura");
         }
         
         this.id = id;
@@ -54,6 +61,13 @@ public class Gasto {
     }
     
     public void setDescripcion(String descripcion) {
+    	if (descripcion == null) {
+            this.descripcion = "";
+            return;
+        }
+    	if (descripcion.length() > 1000) {
+    		throw new IllegalArgumentException("Descripcion demasiado larga");
+    	}
         this.descripcion = descripcion;
     }
     
@@ -68,12 +82,15 @@ public class Gasto {
     // Método para calcular lo que cada usuario debe pagar al pagador
     public void calcularPagoEquitativo() {
     	List<Usuario> usuarios = this.grupo.getMiembros();
+    	if(usuarios.size() == 1) {
+    		return; //Si solo está el pagador, se ignora todo
+    	}
     	double cantidad = this.cantidadPagada / usuarios.size();
         for (Usuario usuario : usuarios) {
 			if (!usuario.equals(pagador)) {
 				usuario.recibirMensajeGasto(String.format("Se ha pagado %f a %s",cantidad,this.pagador), -cantidad);
 			}
 		}
-        pagador.recibirMensajeGasto(String.format("Se ha recibido la compensación por tu pago de %f", this.cantidadPagada), this.cantidadPagada);
+        pagador.recibirMensajeGasto(String.format("Se ha recibido la compensación por tu pago de %f", this.cantidadPagada), this.cantidadPagada-cantidad);
     }
 }

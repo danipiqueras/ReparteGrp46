@@ -15,16 +15,14 @@ public class Grupo {
     private List<Gasto> gastos;
 
     public Grupo(String nombre, Usuario creador, String descripcion, LocalDate fechaCreacion) {
-        if (nombre == null || nombre.isEmpty()) {
-            throw new IllegalArgumentException("El nombre del grupo no puede ser nulo o vacío");
-        }
+
         if (creador == null) {
             throw new IllegalArgumentException("El creador del grupo no puede ser nulo");
         }
-        if (descripcion == null) {
-            this.descripcion = "";
+        if (fechaCreacion == null) {
+            throw new IllegalArgumentException("La fecha de creacion no puede ser nula");
         }
-
+        
         this.id = ++contadorGrupos;
         this.setNombre(nombre);
         this.creador = creador;
@@ -44,8 +42,11 @@ public class Grupo {
     }
 
     public void setNombre(String nombre) {
-        if (nombre == null || nombre.isEmpty()) {
+    	if (nombre == null || nombre.isEmpty()) {
             throw new IllegalArgumentException("El nombre del grupo no puede ser nulo o vacío");
+        }
+        if (nombre.length() > 60) {
+            throw new IllegalArgumentException("Nombre demasiado largo");
         }
         this.nombre = nombre;
     }
@@ -59,9 +60,13 @@ public class Grupo {
     }
 
     public void setDescripcion(String descripcion) {
-        if (descripcion == null) {
-            throw new IllegalArgumentException("La descripción del grupo no puede ser nula");
+    	if (descripcion == null) {
+            this.descripcion = "";
+            return;
         }
+    	if (descripcion.length() > 1000) {
+    		throw new IllegalArgumentException("Descripcion demasiado larga");
+    	}
         this.descripcion = descripcion;
     }
 

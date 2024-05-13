@@ -14,7 +14,7 @@ class PruebaRepartirGasto {
     void testUnicoMiembro() {
         // Crear usuario valido
         Usuario juan = new Usuario("Juan", "juan@example.com", "12345678A", "123456789");
-
+        double balanceInicial = juan.getBalance();
         // Crear grupo valido
         Grupo grupo = new Grupo("Grupo", juan, "Grupo de prueba", LocalDate.now());
 
@@ -22,6 +22,8 @@ class PruebaRepartirGasto {
         Gasto gasto = new Gasto(1, grupo, juan, "Gasto de prueba", 10, LocalDate.now());
         
 		gasto.calcularPagoEquitativo();
+		
+		assertEquals(balanceInicial, juan.getBalance());
     }
 
 	@Test
@@ -69,10 +71,10 @@ class PruebaRepartirGasto {
         }
         
      // Verificar que se han cobrado
-        assertEquals(eva.getBalance(), (-12.00-17.49-20.22-5.75)/4);
-        assertEquals(luis.getBalance(), (-11.30-23.15-2.05-20.22-5.75)/4);
-        assertEquals(marta.getBalance(), (-11.30-23.15-2.05-12.00-17.49-5.75)/4);
-        assertEquals(juan.getBalance(), (-11.30-23.15-2.05-12.00-17.49-20.22)/4);
+        assertEquals(eva.getBalance(), (11.30+23.15+2.05)*0.75 + (-12.00-17.49-20.22-5.75)*0.25);
+        assertEquals(luis.getBalance(), (12.00+17.49)*0.75 + (-11.30-23.15-2.05-20.22-5.75)*0.25);
+        assertEquals(marta.getBalance(), 20.22*0.75 + (-11.30-23.15-2.05-12.00-17.49-5.75)*0.25);
+        assertEquals(juan.getBalance(), 5.75*0.75 + (-11.30-23.15-2.05-12.00-17.49-20.22)*0.25);
     }
 
 }
