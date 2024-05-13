@@ -1,7 +1,7 @@
 package oldtravelsa;
 
-import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class Usuario {
     private final String dni; // DNI como clave primaria
@@ -24,8 +24,8 @@ public class Usuario {
         if (nombre == null || nombre.isEmpty()) {
             throw new IllegalArgumentException("El nombre no puede ser nulo o vacío");
         }
-        if (telefono == null || telefono.isEmpty()) {
-            throw new IllegalArgumentException("El teléfono no puede ser nulo o vacío");
+        if (telefono == null || telefono.isEmpty() || !(telefono.length()==9) ){
+            throw new IllegalArgumentException("El teléfono no puede ser nulo o vacío, y deben ser 9 números");
         }
 
         this.dni = dni;
@@ -82,11 +82,15 @@ public class Usuario {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+    
+    public Queue<String> getBuzon() {
+		return buzon;
+	}
 
     // Método para manejar los mensajes de gastos
     public void recibirMensajeGasto(String mensaje, double cantidad) {
         buzon.offer(mensaje); // Añadir mensaje al buzón
-        balance -= cantidad; // Restar la cantidad del balance
+        balance += cantidad; // Añadir o restar balance
     }
 
     // Sobrescribir el método equals para comparar por DNI

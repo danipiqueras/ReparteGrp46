@@ -8,11 +8,25 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-class PruebaAceptacion {
+class PruebaRepartirGasto {
+
+	@Test
+    void testUnicoMiembro() {
+        // Crear usuario valido
+        Usuario juan = new Usuario("Juan", "juan@example.com", "12345678A", "123456789");
+
+        // Crear grupo valido
+        Grupo grupo = new Grupo("Grupo", juan, "Grupo de prueba", LocalDate.now());
+
+        // Crear gasto no valido
+        Gasto gasto = new Gasto(1, grupo, juan, "Gasto de prueba", 10, LocalDate.now());
+        
+		gasto.calcularPagoEquitativo();
+    }
 
 	@Test
     void testGastosGrupoLosCuatro() {
-        // Crear usuarios
+        // Crear usuarios validos
         Usuario juan = new Usuario("Juan", "juan@example.com", "12345678A", "123456789");
         Usuario luis = new Usuario("Luis", "luis@example.com", "87654321B", "987654321");
         Usuario eva = new Usuario("Eva", "eva@example.com", "11111111X", "111111111");
@@ -62,3 +76,4 @@ class PruebaAceptacion {
     }
 
 }
+

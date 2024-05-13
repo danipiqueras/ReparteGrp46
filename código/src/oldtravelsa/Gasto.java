@@ -12,6 +12,10 @@ public class Gasto {
     private final LocalDate fecha;
     
     public Gasto(int id, Grupo grupo, Usuario pagador, String descripcion, double cantidadPagada, LocalDate fecha) {
+    	if (grupo == null) {
+            throw new IllegalArgumentException("El grupo no puede ser nulo");
+        }
+    	
         // Comprueba que la cantidad sea mayor a 0
         if (cantidadPagada <= 0) {
             throw new IllegalArgumentException("La cantidad pagada debe ser mayor a 0");
@@ -25,7 +29,7 @@ public class Gasto {
         this.id = id;
         this.grupo = grupo;
         this.pagador = pagador;
-        this.descripcion = descripcion;
+        this.setDescripcion(descripcion);
         this.cantidadPagada = cantidadPagada;
         this.fecha = fecha;
         
@@ -67,8 +71,9 @@ public class Gasto {
     	double cantidad = this.cantidadPagada / usuarios.size();
         for (Usuario usuario : usuarios) {
 			if (!usuario.equals(pagador)) {
-				usuario.recibirMensajeGasto(String.format("Se debe pagar %f a %s",cantidad,this.pagador), cantidad);
+				usuario.recibirMensajeGasto(String.format("Se ha pagado %f a %s",cantidad,this.pagador), -cantidad);
 			}
 		}
+        pagador.recibirMensajeGasto(String.format("Se ha recibido la compensación por tu pago de %f", this.cantidadPagada), this.cantidadPagada);
     }
 }

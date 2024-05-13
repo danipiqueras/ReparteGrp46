@@ -1,8 +1,8 @@
 package oldtravelsa;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDate;
 
 public class Grupo {
     private static int contadorGrupos = 0; // Variable estática para contar los grupos
@@ -22,7 +22,7 @@ public class Grupo {
             throw new IllegalArgumentException("El creador del grupo no puede ser nulo");
         }
         if (descripcion == null) {
-            throw new IllegalArgumentException("La descripción del grupo no puede ser nula");
+            this.descripcion = "";
         }
 
         this.id = ++contadorGrupos;
